@@ -9,7 +9,12 @@ from pydantic import BaseModel #This is a base class from Pydantic used for data
 import pickle   #This module is used to load the trained machine learning model from a file.
 
 # Load the trained model
+
 model = pickle.load(open('loan_status_predict.sav', 'rb'))
+cols = ['ApplicantIncome', 'CoapplicantIncome', 'LoanAmount', 'Loan_Amount_Term'] 
+from sklearn.preprocessing import StandardScaler 
+st = StandardScaler()
+
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -59,6 +64,7 @@ def predict(request: PredictionRequest):    #The predict function takes a Predic
     ]
     #Above block of code extracts the feature values from the incoming request and stores them in a list called features. This list will be used as input to the machine learning model.
     # Make prediction
+    features[cols] = st.fit_transform(features[cols])
     try:
         prediction = model.predict([features])  #The features list is wrapped in another list because predict expects a 2D array.
         return {'prediction': int(prediction[0])}
@@ -71,7 +77,7 @@ if __name__ == '__main__':  #This pattern is common in Python scripts to ensure 
 
 
     import uvicorn  #Uvicorn is an ASGI (Asynchronous Server Gateway Interface) server that is used to run FastAPI applications.
-    uvicorn.run(app, host='0.0.0.0', port=8002)
+    uvicorn.run(app, host='0.0.0.0', port=8004)
     #'0.0.0.0' means that the application will be accessible on all available network interfaces of the machine running the script. This makes the API accessible not just from localhost, but also from any external devices that can reach the server over the network.
 
     

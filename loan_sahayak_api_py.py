@@ -9,7 +9,7 @@ from pydantic import BaseModel #This is a base class from Pydantic used for data
 import pickle   #This module is used to load the trained machine learning model from a file.
 
 # Load the trained model
-model = pickle.load(open('loan_status_prediction_rs.sav', 'rb'))
+model = pickle.load(open('loan_status_predict.sav', 'rb'))
 
 # Initialize FastAPI app
 app = FastAPI()

@@ -14,7 +14,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",  # React dev server
-    "https://grih-khoj.onrender.com",  # Your deployed frontend
+    "https://loan-sahayak-z5n7.onrender.com/",  # Your deployed frontend
 ]
 
 app.add_middleware(
@@ -67,4 +67,4 @@ def predict(request: PredictionRequest):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8018)
+    uvicorn.run(app, host='0.0.0.0', port=8021)

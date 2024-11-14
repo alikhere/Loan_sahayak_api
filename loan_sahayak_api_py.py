@@ -14,7 +14,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",  # React dev server
-    "https://loan-sahayak-z5n7.onrender.com/",  # Your deployed frontend
+    "https://loan-sahayak-z5n7.onrender.com",  # Your deployed frontend
 ]
 
 app.add_middleware(

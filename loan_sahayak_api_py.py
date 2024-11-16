@@ -3,11 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pickle
 import pandas as pd  # Import pandas
+import joblib 
 #from sklearn.preprocessing import StandardScaler 
-#st = StandardScaler()
 
-# Load the trained model
-model = pickle.load(open('loan_status_prediction_rs.sav', 'rb'))
+
+model = pickle.load(open('loan_status_predict.sav', 'rb'))
+
+cols = ['ApplicantIncome', 'CoapplicantIncome', 'LoanAmount', 'Loan_Amount_Term'] 
+
+scaler = joblib.load('vector.pkl')
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -56,9 +60,8 @@ def predict(request: PredictionRequest):
         'Property_Area': request.Property_Area
     }])
     # Make prediction
-    #cols = ['ApplicantIncome', 'CoapplicantIncome', 'LoanAmount', 'Loan_Amount_Term'] 
-    #input_df[cols] = st.fit_transform(input_df[cols])
-
+    
+    input_df[cols] = scaler.transform(input_df[cols])
     try:
         prediction = model.predict(input_df)
         return {'prediction': int(prediction[0])}
@@ -67,4 +70,6 @@ def predict(request: PredictionRequest):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8021)
+    uvicorn.run(app, host='0.0.0.0', port=8028)
+
+
